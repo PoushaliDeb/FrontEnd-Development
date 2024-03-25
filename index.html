@@ -3,77 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
+    <title>Bat Ball Stump</title>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div id="calculator">
-       <input type ="text" id ="display" readonly/>
-       <div id="buttons">
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'c';
-         document.querySelector('#display').value = '';
-         ">c</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'1';
-         document.querySelector('#display').value = currentDisplay;
-         ">1</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'2';
-         document.querySelector('#display').value = currentDisplay;
-         ">2</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'c';
-         document.querySelector('#display').value = currentDisplay;
-         ">+</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'3';
-         document.querySelector('#display').value = currentDisplay;
-         ">3</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'4';
-         document.querySelector('#display').value = currentDisplay;
-         ">4</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'-';
-         document.querySelector('#display').value = currentDisplay;
-         ">-</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'5';
-         document.querySelector('#display').value = currentDisplay;
-         ">5</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'6';
-         document.querySelector('#display').value = currentDisplay;
-         ">6</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'*';
-         document.querySelector('#display').value = currentDisplay;
-         ">*</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'7';
-         document.querySelector('#display').value = currentDisplay;
-         ">7</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'8';
-         document.querySelector('#display').value = currentDisplay;
-         ">8</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'/';
-         document.querySelector('#display').value = currentDisplay;
-         ">/</button>
-          
+    <h1>Bat Ball Stump Game</h1>
 
+    <div id="button-container">
+         <button class = "button"  onclick = "
+           let computerChoice = generatecomputerChoice();
+           let resultMsg = getResult(computerChoice, 'Bat');
+           
+            showResult(computerChoice, 'Bat', resultMsg);
+            
+             ">Bat</button>
+
+            <!-- // Ball Button -->
+        <button class = "button" onclick = " 
+             computerChoice =  generatecomputerChoice();
+
+             resultMsg  = getResult(computerChoice, 'Ball');
+
+              showResult(computerChoice, 'Ball', resultMsg);
+             ">Ball</button>
+
+           <!-- // Stump Button --> 
+         <button class = "button"  onclick = " 
          
-         <button class ="buttons" onclick = " let getValue = eval(currentDisplay);
-         document.querySelector('#display').value = currentDisplay +' = ' + getValue;
-         ">=</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'9';
-         document.querySelector('#display').value = currentDisplay;
-         ">9</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'0';
-         document.querySelector('#display').value = currentDisplay;
-         ">0</button>
-         <button class ="buttons" onclick ="currentDisplay = currentDisplay+'.';
-         document.querySelector('#display').value = currentDisplay;
-         ">.</button>
-         
-       </div>
+            computerChoice =  generatecomputerChoice();
+             resultMsg  = getResult(computerChoice, 'Stamp');
+             
+             showResult(computerChoice, 'Stamp', resultMsg);
+              
+           ">Stump</button>
+
     </div>
 </body>
+
 <script>
+  let localStr = localStorage.getItem('Score') ;
+  let score;
+  if(localStr !== null){
+    score = JSON.parse(localStr);
+  }
+  else{
+    score = {
+   win:0,
+   loss:0,
+   tie:0,
+   };
+ }
+ 
+score.displayScore = function(){
 
-let currentDisplay = '';
-document.querySelector('#display').value = currentDisplay;
+return ` won:${score.win}, loss:${score.loss}, Tie:${score.tie}`;
+};
 
-//For "="
+  function generatecomputerChoice()
+  {
+    let randomNumber = Math.random()*3;
+          
+
+          if(randomNumber>0 && randomNumber<=1)
+              {
+                return 'Bat';
+               // console.log(`Computer's choice is Bat ` ); 
+              }
+          
+          else if(randomNumber>1 && randomNumber<=2)
+               {
+                return 'Ball'; 
+                // console.log(`Computer's choice is Ball ` ); 
+               }
+          else 
+               {
+                return 'Stump'; 
+                // console.log(`Computer's choice is Stump ` ); 
+               }
+   
+  }
+
+  function getResult(computerMove, userMove)
+  {
+      if(userMove === 'Bat')
+      {
+        if(computerMove === 'Bat')
+        {
+          score.tie++;
+          return 'Tie Match';
+        }
+        else if(computerMove === 'Ball')
+        {
+          score.win++;
+          return 'User Won';
+        }
+
+        else{
+          score.loss++;
+          return 'Computer won';
+        }
+      }
+
+      else if(userMove === 'Ball')
+      {
+        if(computerMove === 'Ball')
+        {
+          score.tie++;
+          return 'Tie Match';
+        }
+        else if(computerMove === 'Bat')
+        {
+          score.loss++;
+          return 'Computer Won';
+        }
+
+        else{
+          score.win++;
+          return 'User won';
+        }
+      }
+
+      else
+      {
+        if(computerMove === 'Stamp')
+        {
+          score.tie++;
+          return 'Tie Match';
+        }
+        else if(computerMove === 'Ball')
+        {
+          score.win++;
+          return 'User Won';
+        }
+
+        else{
+          score.loss++;
+          return 'Computer won';
+        }
+      }
+  }
+
+  function showResult(computerMove, userMove, result)
+  {
+    localStorage.setItem('Score',JSON.stringify(score)) ;
+    alert(`User's Choice is ${userMove} and Computer's Choice is ${computerMove}. Result is ${result}
+     ${score.displayScore()};
+     
+     `);
+
+  }
 
 </script>
 </html>
