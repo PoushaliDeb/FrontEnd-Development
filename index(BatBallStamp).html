@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bat Ball Stump</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="index(BatBallStamp).css">
 </head>
 <body>
     <h1>Bat Ball Stump Game</h1>
@@ -16,7 +16,10 @@
            
             showResult(computerChoice, 'Bat', resultMsg);
             
-             ">Bat</button>
+             ">
+             <img src="Images/bat.png" alt="Bat Image" class="choice-image">
+            
+            </button>
 
             <!-- // Ball Button -->
         <button class = "button" onclick = " 
@@ -25,7 +28,10 @@
              resultMsg  = getResult(computerChoice, 'Ball');
 
               showResult(computerChoice, 'Ball', resultMsg);
-             ">Ball</button>
+             ">
+             <img src="Images/ball.png" alt="Bat Image" class="choice-image">
+            
+            </button>
 
            <!-- // Stump Button --> 
          <button class = "button"  onclick = " 
@@ -35,7 +41,24 @@
              
              showResult(computerChoice, 'Stamp', resultMsg);
               
-           ">Stump</button>
+           ">
+           <img src="Images/stump.png" alt="Bat Image" class="choice-image">
+          
+          </button>
+
+           <div id="result-style">
+
+            <h3 id="user-move"></h3>
+           <h3 id="computer-move"></h3>
+           <h3 id="result"></h3>
+           <h3 id="score"></h3>
+
+           </div>
+          
+            <!--To clear all the values from localstorage-->
+           <button onlick ="localStorage.clear()
+           resetResult();
+           ">Reset</button>
 
     </div>
 </body>
@@ -43,16 +66,27 @@
 <script>
   let localStr = localStorage.getItem('Score') ;
   let score;
-  if(localStr !== null){
-    score = JSON.parse(localStr);
+  function resetResult(localStr){
+   score = JSON.parse(localStr)||
+  {
+    win:0,
+    loss:0,
+    tie:0,
   }
-  else{
-    score = {
-   win:0,
-   loss:0,
-   tie:0,
-   };
- }
+}
+
+ resetResult(localStr);
+  // let score;
+//   if(localStr !== null){
+//     score = JSON.parse(localStr);
+//   }
+//   else{
+//     score = {
+//    win:0,
+//    loss:0,
+//    tie:0,
+//    };
+//  }
  
 score.displayScore = function(){
 
@@ -146,10 +180,18 @@ return ` won:${score.win}, loss:${score.loss}, Tie:${score.tie}`;
   function showResult(computerMove, userMove, result)
   {
     localStorage.setItem('Score',JSON.stringify(score)) ;
-    alert(`User's Choice is ${userMove} and Computer's Choice is ${computerMove}. Result is ${result}
-     ${score.displayScore()};
+
+    document.querySelector('#user-move').innerText = `User's Choice is ${userMove}`;
+    document.querySelector('#computer-move').innerText = `Computer's Choice is ${computerMove}`;
+    document.querySelector('#result').innerText = `Result is ${result}`;
+    document.querySelector('#score').innerText = `Score is  ${score.displayScore()}`;
+
+// score.displayScore();    
+
+    // alert(`User's Choice is ${userMove} and Computer's Choice is ${computerMove}. Result is ${result}
+    //  ${score.displayScore()};
      
-     `);
+    //  `);
 
   }
 
